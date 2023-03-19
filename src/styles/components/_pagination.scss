@@ -1,0 +1,31 @@
+/* stylelint-disable selector-class-pattern */
+.pagination {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  margin-top: 50px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    border-radius: 25px;
+    inset: 0;
+    top: 50%;
+    left: 50%;
+    height: 60px;
+    width: 110%;
+    border: 1px solid #fff;
+    transform: translate(-50%, -50%);
+    background: rgb(34 39 44 / 85%);
+  }
+
+  button {
+    border: 1px solid #fff;
+    color: #fff;
+  }
+
+  .Mui-selected {
+    background-color: $pagination-selected !important;
+  }
+}

@@ -11,8 +11,8 @@ export interface Planet {
   films: string[]
   residents: string[]
   surface_water: string
-  edited: Date
-  created: Date
+  edited: string
+  created: string
   url: string
 }
 
@@ -25,7 +25,8 @@ export interface PlanetsResponse {
 
 export interface PlanetsState {
   planets: Planet[]
-  status: 'loading' | 'succeeded' | 'failed'
+  currentPlanet: Planet | null
+  status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | undefined
   count: number
 }

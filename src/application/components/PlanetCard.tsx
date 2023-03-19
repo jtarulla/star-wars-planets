@@ -1,35 +1,43 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Card,
   CardHeader,
   CardContent,
+  CardActions,
   Typography,
   IconButton,
   Menu,
   MenuItem,
+  Button,
 } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import StraightenIcon from '@mui/icons-material/Straighten'
-import TerrainIcon from '@mui/icons-material/Terrain'
-import Groups3Icon from '@mui/icons-material/Groups3'
-import ThermostatIcon from '@mui/icons-material/Thermostat'
-import { useState } from 'react'
 
+import PlanetInfo from '@/application/components/PlanetInfo'
 import { Planet } from '@/domain/models/Planet'
 
 interface PlanetCardProps {
   planet: Planet
 }
 
-const PlanetCard: React.FC<PlanetCardProps> = ({ planet }) => {
+const PlanetCard = ({ planet }: PlanetCardProps) => {
+  let navigate = useNavigate()
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+
+  const handleOptionsClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
-  const handleClose = () => {
+
+  const handleOptionsClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleLearnMoreClick = () => {
+    navigate(`/planets/${planet.id}`)
   }
 
   return (
@@ -46,7 +54,7 @@ const PlanetCard: React.FC<PlanetCardProps> = ({ planet }) => {
               <IconButton
                 aria-label="settings"
                 color="inherit"
-                onClick={handleClick}
+                onClick={handleOptionsClick}
               >
                 <MoreVertIcon />
               </IconButton>
@@ -54,13 +62,13 @@ const PlanetCard: React.FC<PlanetCardProps> = ({ planet }) => {
                 id="options-menu"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleClose}
+                onClose={handleOptionsClose}
               >
-                <MenuItem onClick={handleClose} disableRipple>
+                <MenuItem onClick={handleOptionsClose} disableRipple>
                   <EditIcon />
                   Edit
                 </MenuItem>
-                <MenuItem onClick={handleClose} disableRipple>
+                <MenuItem onClick={handleOptionsClose} disableRipple>
                   <DeleteIcon />
                   Delete
                 </MenuItem>
@@ -68,23 +76,20 @@ const PlanetCard: React.FC<PlanetCardProps> = ({ planet }) => {
             </>
           }
         />
-        <Typography display={'flex'} gap={1} data-testid="diameter">
-          <StraightenIcon color="primary" />
-          <b>Diameter:</b> {planet.diameter} Km
-        </Typography>
-        <Typography display={'flex'} gap={1} data-testid="climate">
-          <ThermostatIcon color="primary" />
-          <b>Climate:</b> {planet.climate}
-        </Typography>
-        <Typography display={'flex'} gap={1} data-testid="terrain">
-          <TerrainIcon color="primary" />
-          <b>Terrain:</b> {planet.terrain}
-        </Typography>
-        <Typography display={'flex'} gap={1} data-testid="population">
-          <Groups3Icon color="primary" />
-          <b>Population:</b> {planet.population}
-        </Typography>
+        <PlanetInfo planet={planet} />
       </CardContent>
+      <CardActions>
+        <Button
+          className="learn-more-btn"
+          onClick={handleLearnMoreClick}
+          variant="contained"
+          color="info"
+          size="small"
+          sx={{ display: 'flex' }}
+        >
+          Learn More
+        </Button>
+      </CardActions>
     </Card>
   )
 }
