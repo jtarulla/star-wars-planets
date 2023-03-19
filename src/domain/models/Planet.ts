@@ -22,3 +22,10 @@ export interface PlanetsResponse {
   previous: string | null
   results: Planet[]
 }
+
+export interface PlanetsState {
+  planets: Planet[]
+  status: 'loading' | 'succeeded' | 'failed'
+  error: string | undefined
+  count: number
+}
