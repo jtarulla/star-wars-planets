@@ -1,0 +1,23 @@
+/* stylelint-disable selector-class-pattern */
+.planet-card {
+  background: $card-color !important;
+  border-radius: 2px 50px !important;
+  height: 100%;
+  color: #fff !important;
+  text-align: left;
+  box-shadow: 0 1px 2px rgb(225 233 235 / 82%);
+  
+  .MuiCardHeader-root {
+    padding: 16px 0 !important;
+    
+    h2 {
+      font-size: 1.5em;
+      font-family: 'Star Jedi', sans-serif !important;
+    } 
+  }
+  
+  &:hover {
+    border-color: $card-border;
+    box-shadow: 0 4px 6px rgb(225 233 235 / 38.5%)
+  }
+}

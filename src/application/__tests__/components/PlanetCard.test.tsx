@@ -1,0 +1,27 @@
+import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
+
+import PlanetCard from '@/application/components/PlanetCard'
+import { createMockPlanet } from '@/application/__mocks__/Planet'
+
+describe('PlanetCard', () => {
+  test('renders planet name, population, climate, and terrain', () => {
+    const samplePlanet = createMockPlanet()
+
+    render(<PlanetCard planet={samplePlanet} />)
+
+    const propertiesToTest = [
+      { id: 'population', label: 'Population' },
+      { id: 'diameter', label: 'Diameter' },
+      { id: 'climate', label: 'Climate' },
+      { id: 'terrain', label: 'Terrain' },
+    ]
+
+    propertiesToTest.forEach(({ id, label }) => {
+      const element = screen.getByTestId(id)
+      expect(element).toHaveTextContent(
+        `${label}: ${(samplePlanet as any)[id]}`
+      )
+    })
+  })
+})
