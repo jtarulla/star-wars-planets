@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test:unit": "jest --watchAll",
+    "test:unit": "jest --ci",
+    "test:unit-watch": "jest --watchAll",
     "lint": "eslint 'src/**/*.ts'",
     "lint:styles": "stylelint '**/*.{scss,css}'",
     "lint:styles:fix": "stylelint '**/*.{scss,css}' --fix"
