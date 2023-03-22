@@ -9,7 +9,7 @@ export const loadState = () => {
     }
     return JSON.parse(serializedState)
   } catch (err) {
-    console.error('Failed to load state from localStorage:', err)
+    throw `Failed to load state from localStorage: ${err}`
     return undefined
   }
 }
@@ -21,6 +21,6 @@ export const saveState = (
     const serializedState = JSON.stringify(state)
     localStorage.setItem('reduxState', serializedState)
   } catch (err) {
-    console.error('Failed to save state to localStorage:', err)
+    throw `Failed to save state from localStorage: ${err}`
   }
 }

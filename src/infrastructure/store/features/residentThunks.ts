@@ -10,7 +10,13 @@ export const fetchResidentsAsync = createAsyncThunk<
   { state: RootState }
 >('residents/fetch', async (_, { getState, rejectWithValue }) => {
   try {
-    const urls = getState().planets!.currentPlanet!.residents
+    const currentPlanet = getState().planets.currentPlanet
+
+    if (!currentPlanet) {
+      throw new Error('No current planet selected')
+    }
+
+    const urls = currentPlanet.residents
     const ResidentsResponse = await fetchResidents(urls)
 
     return ResidentsResponse
