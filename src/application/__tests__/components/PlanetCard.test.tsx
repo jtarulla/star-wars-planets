@@ -1,5 +1,3 @@
-import '@testing-library/jest-dom'
-
 import { render, screen } from '@/test-utils'
 import PlanetCard from '@/application/components/PlanetCard'
 import { createMockPlanet } from '@/application/__mocks__/createMockPlanet'

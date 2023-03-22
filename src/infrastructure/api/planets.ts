@@ -1,7 +1,8 @@
+import { AxiosError } from 'axios'
+
 import apiClient from '@/infrastructure/api'
 import { Planet, PlanetsResponse } from '@/domain/models/Planet'
-import { handleError } from './handleError'
-import { AxiosError } from 'axios'
+import { handleError } from '@/infrastructure/api/handleError'
 
 const addIdToPlanet = (planet: Planet): Planet => {
   const id = planet.url.match(/\/(\d+)\/$/)?.[1] || ''
@@ -23,10 +24,10 @@ export const fetchPlanets = async (page: number): Promise<PlanetsResponse> => {
   }
 }
 
-export const fetchPlanetById = async (id: number): Promise<Planet> => {
+export const fetchPlanetById = async (id: string): Promise<Planet> => {
   try {
-    const response: Planet = await apiClient.get(`planets/${id}`)
-    return response
+    const response = await apiClient.get(`planets/${id}`)
+    return response.data
   } catch (error) {
     handleError(
       error as AxiosError,

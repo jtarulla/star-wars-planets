@@ -1,5 +1,9 @@
 /* stylelint-disable selector-class-pattern */
 .planet-card {
+  display: flex;
+  flex-flow: column nowrap;
+  position: relative;
+  padding-bottom: 10px;
   background: $card-color !important;
   border-radius: 2px 50px !important;
   height: 100%;
@@ -19,5 +23,15 @@
   &:hover {
     border-color: $card-border;
     box-shadow: 0 4px 6px rgb(225 233 235 / 38.5%)
+  }
+
+  .learn-more-btn {
+    position: absolute;
+    right: 16px;
+  }
+
+  .MuiCardActions-root {
+    margin-top: auto;
+    margin-bottom: 10px;
   }
 }

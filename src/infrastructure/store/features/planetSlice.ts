@@ -1,11 +1,15 @@
 import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit'
 
 import { PlanetsResponse, Planet, PlanetsState } from '@/domain/models/Planet'
-import { fetchPlanetsAsync } from '@/infrastructure/store/features/planetThunks'
+import {
+  fetchPlanetsAsync,
+  fetchPlanetByIdAsync,
+} from '@/infrastructure/store/features/planetThunks'
 
 const initialState: PlanetsState = {
   planets: [],
-  status: 'loading',
+  currentPlanet: null,
+  status: 'idle',
   error: undefined,
   count: 0,
 }
@@ -60,6 +64,22 @@ export const planetSlice = createSlice({
           state.error = action.error.message
         }
       )
+      .addCase(fetchPlanetByIdAsync.pending, (state) => {
+        state.status = 'loading'
+        state.currentPlanet = null
+      })
+      .addCase(
+        fetchPlanetByIdAsync.fulfilled,
+        (state, action: PayloadAction<Planet>) => {
+          state.status = 'succeeded'
+          state.currentPlanet = action.payload
+          state.error = undefined
+        }
+      )
+      .addCase(fetchPlanetByIdAsync.rejected, (state, action) => {
+        state.status = 'failed'
+        state.error = action.error.message
+      })
   },
 })
 

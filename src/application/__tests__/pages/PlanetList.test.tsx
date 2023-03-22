@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@/test-utils'
+import { render, screen } from '@/test-utils'
 import PlanetList from '@/application/pages/PlanetList'
 import { createMockPlanet, createMockState } from '@/application/__mocks__'
 import { RootState } from '@/infrastructure/store'
