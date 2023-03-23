@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Skeleton, Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
@@ -10,15 +10,16 @@ import PlanetCard from '@/application/components/PlanetCard'
 import { useNavigate } from 'react-router'
 
 const PlanetList = () => {
-  const [page, setPage] = useState(1)
-  const { planetsByPage, newPlanets, status, count } = useSelector(
+  const { planetsByPage, newPlanets, status, count, currentPage } = useSelector(
     (state: RootState) => state.planets
   )
 
   const numberOfPages = Math.ceil(count / 10)
-  const planetsFromAPI = planetsByPage[page] || []
+  const planetsFromAPI = planetsByPage[currentPage] || []
   const planets =
-    page === numberOfPages ? planetsFromAPI.concat(newPlanets) : planetsFromAPI
+    currentPage === numberOfPages
+      ? planetsFromAPI.concat(newPlanets)
+      : planetsFromAPI
 
   const navigate = useNavigate()
 
@@ -27,14 +28,14 @@ const PlanetList = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    dispatch(fetchPlanetsAsync(page))
-  }, [dispatch, page])
+    dispatch(fetchPlanetsAsync(currentPage))
+  }, [dispatch, currentPage])
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     page: number
   ) => {
-    setPage(page)
+    dispatch(fetchPlanetsAsync(page))
   }
 
   const navigateToAddPlanet = () => {
@@ -82,7 +83,7 @@ const PlanetList = () => {
       ) : (
         <Pagination
           count={numberOfPages}
-          page={page}
+          page={currentPage}
           onChange={handlePageChange}
           variant="outlined"
           className="pagination"
