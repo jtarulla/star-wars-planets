@@ -3,9 +3,10 @@ import { Planet } from '@/domain/models/Planet'
 import { Resident } from '@/domain/models/Resident'
 
 export interface MockStateOptions {
+  planetsByPage?: { [page: number]: Planet[] }
   currentPlanet?: Planet | null
   planetStatus?: 'idle' | 'loading' | 'succeeded' | 'failed'
-  planets?: Planet[]
+  newPlanets?: Planet[]
   planetError?: string | null
   planetCount?: number
   residents?: Resident[]
@@ -16,7 +17,8 @@ export interface MockStateOptions {
 export function createMockState(options: MockStateOptions): RootState {
   return {
     planets: {
-      planets: options.planets || [],
+      newPlanets: options.newPlanets || [],
+      planetsByPage: options.planetsByPage || {},
       currentPlanet: options.currentPlanet || null,
       status: options.planetStatus || 'idle',
       error: options.planetError || undefined,

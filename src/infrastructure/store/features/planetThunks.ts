@@ -1,19 +1,40 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+
 import { fetchPlanets, fetchPlanetById } from '@/infrastructure/api/planets'
+import { RootState } from '@/infrastructure/store'
 import { PlanetsResponse } from '@/domain/models/Planet'
 
-export const fetchPlanetsAsync = createAsyncThunk<PlanetsResponse, number>(
-  'planets/fetch',
-  async (page: number, { rejectWithValue }) => {
-    try {
-      const planetsResponse = await fetchPlanets(page)
+export const fetchPlanetsAsync = createAsyncThunk<
+  PlanetsResponse,
+  number,
+  { state: RootState }
+>('planets/fetch', async (page: number, { getState, rejectWithValue }) => {
+  const { planetsByPage, newPlanets } = getState().planets
 
-      return planetsResponse
-    } catch (error) {
-      return rejectWithValue('Error fetching planets')
+  if (planetsByPage[page]) {
+    return {
+      results: planetsByPage[page],
+      count: newPlanets.length,
+      next: null,
+      previous: null,
+      page,
     }
   }
-)
+
+  try {
+    const response = await fetchPlanets(page)
+    const results = [...response.results, ...newPlanets]
+    return {
+      results,
+      count: response.count,
+      next: response.next,
+      previous: response.previous,
+      page,
+    }
+  } catch (error) {
+    return rejectWithValue('Error fetching planets')
+  }
+})
 
 export const fetchPlanetByIdAsync = createAsyncThunk(
   'planets/fetchPlanetById',

@@ -8,7 +8,7 @@ let preloadedState: RootState
 describe('PlanetList', () => {
   test('renders planets', async () => {
     const mockedPlanets = createMockPlanet()
-    preloadedState = createMockState({ planets: [mockedPlanets] })
+    preloadedState = createMockState({ planetsByPage: { 1: [mockedPlanets] } })
 
     render(<PlanetList />, { preloadedState })
 
@@ -23,6 +23,6 @@ describe('PlanetList', () => {
     render(<PlanetList />, { preloadedState: loadingState })
 
     const skeletons = await screen.findAllByTestId('planet-skeleton')
-    expect(skeletons.length).toEqual(10)
+    expect(skeletons.length).toEqual(12)
   })
 })

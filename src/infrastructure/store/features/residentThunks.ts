@@ -17,7 +17,7 @@ export const fetchResidentsAsync = createAsyncThunk<
     }
 
     const urls = currentPlanet.residents
-    const ResidentsResponse = await fetchResidents(urls)
+    const ResidentsResponse = urls && (await fetchResidents(urls))
 
     return ResidentsResponse
   } catch (error) {

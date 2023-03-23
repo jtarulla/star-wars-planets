@@ -1,13 +1,16 @@
 import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit'
+import { toast } from 'react-toastify'
 
 import { PlanetsResponse, Planet, PlanetsState } from '@/domain/models/Planet'
 import {
   fetchPlanetsAsync,
   fetchPlanetByIdAsync,
 } from '@/infrastructure/store/features/planetThunks'
+import { loadState } from '@/infrastructure/store/localStorage'
 
 const initialState: PlanetsState = {
-  planets: [],
+  planetsByPage: {},
+  newPlanets: loadState()?.planets || [],
   currentPlanet: null,
   status: 'idle',
   error: undefined,
@@ -19,20 +22,12 @@ export const planetSlice = createSlice({
   initialState,
   reducers: {
     addPlanet: (state, action: PayloadAction<Planet>) => {
-      state.planets.push(action.payload)
+      const { name } = action.payload
+      state.newPlanets.push(action.payload)
+      toast.success(`Planet ${name} has been added successfully`)
     },
-    editPlanet: (state, action: PayloadAction<Planet>) => {
-      const index = state.planets.findIndex(
-        (planet) => planet.id === action.payload.id
-      )
-      if (index !== -1) {
-        state.planets[index] = action.payload
-      }
-    },
-    removePlanet: (state, action: PayloadAction<string>) => {
-      state.planets = state.planets.filter(
-        (planet) => planet.id !== action.payload
-      )
+    setCurrentPlanet: (state, action: PayloadAction<Planet>) => {
+      state.currentPlanet = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -44,7 +39,7 @@ export const planetSlice = createSlice({
         fetchPlanetsAsync.fulfilled,
         (state, action: PayloadAction<PlanetsResponse>) => {
           state.status = 'succeeded'
-          state.planets = action.payload.results
+          state.planetsByPage[action.payload.page] = action.payload.results
           state.count = action.payload.count
           state.error = undefined
         }
@@ -83,6 +78,6 @@ export const planetSlice = createSlice({
   },
 })
 
-export const { addPlanet, editPlanet, removePlanet } = planetSlice.actions
+export const { addPlanet, setCurrentPlanet } = planetSlice.actions
 
 export default planetSlice.reducer

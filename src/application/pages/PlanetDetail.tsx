@@ -1,34 +1,32 @@
-import { useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  Button,
-  Container,
-  Typography,
-  Box,
-  CircularProgress,
-} from '@mui/material'
-import HomeIcon from '@mui/icons-material/Home'
+import { Container, Typography, Box, CircularProgress } from '@mui/material'
 
 import PlanetInfo from '@/application/components/PlanetInfo'
+import BackHomeButton from '@/application/components/BackHomeButton'
 import { fetchPlanetByIdAsync } from '@/infrastructure/store/features/planetThunks'
 import { fetchResidentsAsync } from '@/infrastructure/store/features/residentThunks'
+import { setCurrentPlanet } from '@/infrastructure/store/features/planetSlice'
 import { RootState, AppDispatch } from '@/infrastructure/store'
 
 const PlanetDetail = () => {
   const { id } = useParams<{ id: string }>()
-  const { currentPlanet: planet, status: planetStatus } = useSelector(
-    (state: RootState) => state.planets
-  )
+  const [isNewPlanet, setIsNewPlanet] = useState(false)
+  const {
+    currentPlanet: planet,
+    status: planetStatus,
+    newPlanets,
+  } = useSelector((state: RootState) => state.planets)
   const { residents, status: residentsStatus } = useSelector(
     (state: RootState) => state.residents
   )
   const dispatch = useDispatch<AppDispatch>()
-  const navigate = useNavigate()
 
   const boxStyles = {
     maxWidth: '800px',
     minWidth: '300px',
+    minHeight: '85px',
     borderRadius: '8px',
     color: 'white',
     padding: '10px 12px',
@@ -36,29 +34,30 @@ const PlanetDetail = () => {
   }
 
   useEffect(() => {
-    id &&
+    if (id) {
+      const newPlanet = newPlanets.find((planet) => planet.id === id)
+
+      if (newPlanet) {
+        dispatch(setCurrentPlanet(newPlanet))
+        setIsNewPlanet(true)
+        return
+      }
+
       dispatch(fetchPlanetByIdAsync(id)).then(() =>
         dispatch(fetchResidentsAsync())
       )
+    }
   }, [dispatch])
 
-  const handleBackBtnClick = () => {
-    navigate('/')
-  }
-
   return (
-    <Container className="planet-detail" disableGutters maxWidth="lg">
-      <Button onClick={handleBackBtnClick} variant="contained">
-        <HomeIcon /> Back
-      </Button>
-
+    <Container disableGutters maxWidth="lg">
+      <BackHomeButton />
       {planetStatus === 'loading' ? (
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            minHeight: '85px',
             ...boxStyles,
           }}
         >
@@ -82,7 +81,7 @@ const PlanetDetail = () => {
             >
               <PlanetInfo planet={planet} />
             </Box>
-            {planet.residents.length !== 0 && (
+            {planet.residents && planet.residents.length !== 0 && (
               <Box
                 display={'flex'}
                 flexDirection={'column'}
@@ -99,7 +98,6 @@ const PlanetDetail = () => {
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      minHeight: '85px',
                       ...boxStyles,
                     }}
                   >
@@ -108,8 +106,12 @@ const PlanetDetail = () => {
                       color="inherit"
                     />
                   </Box>
+                ) : isNewPlanet ? (
+                  planet.residents.map((resident, index) => (
+                    <Typography key={index}>{resident}</Typography>
+                  ))
                 ) : (
-                  residents?.map((resident, index) => (
+                  residents.map((resident, index) => (
                     <Typography key={index}>{resident.name}</Typography>
                   ))
                 )}

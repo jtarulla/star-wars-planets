@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 // import EditPlanet from '@/pages/EditPlanet'
 import PlanetDetail from '@/application/pages/PlanetDetail'
 import PlanetList from '@/application/pages/PlanetList'
+import AddPlanet from '@/application/pages/AddPlanet'
 
 const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
   {
     path: '/planets/:id',
     element: <PlanetDetail />,
+  },
+  {
+    path: '/planets/new',
+    element: <AddPlanet />,
   },
 ])
 

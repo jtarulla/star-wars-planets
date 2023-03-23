@@ -1,19 +1,19 @@
 export interface Planet {
-  name: string
   id: string
-  rotation_period: string
-  orbital_period: string
-  climate: string
+  name: string
   diameter: string
-  gravity: string
+  climate: string
   terrain: string
   population: string
-  films: string[]
-  residents: string[]
-  surface_water: string
-  edited: string
-  created: string
   url: string
+  residents: string[]
+  rotation_period?: string
+  orbital_period?: string
+  gravity?: string
+  films?: string[]
+  surface_water?: string
+  edited?: string
+  created?: string
 }
 
 export interface PlanetsResponse {
@@ -21,10 +21,12 @@ export interface PlanetsResponse {
   next: string | null
   previous: string | null
   results: Planet[]
+  page: number
 }
 
 export interface PlanetsState {
-  planets: Planet[]
+  planetsByPage: { [page: number]: Planet[] }
+  newPlanets: Planet[]
   currentPlanet: Planet | null
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | undefined

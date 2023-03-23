@@ -7,12 +7,10 @@ import store from './infrastructure/store'
 import '@/styles/main.scss'
 
 const rootElement = document.getElementById('root') as HTMLElement
-const root = createRoot(rootElement!)
+const root = rootElement && createRoot(rootElement)
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <App />
+  </Provider>
 )
