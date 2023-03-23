@@ -27,10 +27,8 @@ const PlanetList = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
-    if (!planetsByPage[page]) {
-      dispatch(fetchPlanetsAsync(page))
-    }
-  }, [dispatch, page, planetsByPage])
+    dispatch(fetchPlanetsAsync(page))
+  }, [dispatch, page])
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,

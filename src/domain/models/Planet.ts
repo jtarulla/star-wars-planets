@@ -27,6 +27,7 @@ export interface PlanetsResponse {
 export interface PlanetsState {
   planetsByPage: { [page: number]: Planet[] }
   newPlanets: Planet[]
+  currentPage: number
   currentPlanet: Planet | null
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | undefined

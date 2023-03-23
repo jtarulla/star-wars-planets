@@ -7,6 +7,7 @@ export interface MockStateOptions {
   currentPlanet?: Planet | null
   planetStatus?: 'idle' | 'loading' | 'succeeded' | 'failed'
   newPlanets?: Planet[]
+  currentPage?: number
   planetError?: string | null
   planetCount?: number
   residents?: Resident[]
@@ -19,6 +20,7 @@ export function createMockState(options: MockStateOptions): RootState {
     planets: {
       newPlanets: options.newPlanets || [],
       planetsByPage: options.planetsByPage || {},
+      currentPage: options.currentPage || 1,
       currentPlanet: options.currentPlanet || null,
       status: options.planetStatus || 'idle',
       error: options.planetError || undefined,

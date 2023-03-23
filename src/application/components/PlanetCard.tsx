@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Card,
@@ -23,17 +23,25 @@ interface PlanetCardProps {
 }
 
 const PlanetCard = ({ planet }: PlanetCardProps) => {
-  let navigate = useNavigate()
+  const navigate = useNavigate()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
-  const handleOptionsClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOptionsClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleOptionsClose = () => {
+  const handleOptionsClose = (actionType: string | null = null) => {
     setAnchorEl(null)
+
+    if (actionType === 'edit') {
+      handleEditClick()
+    }
+  }
+
+  const handleEditClick = () => {
+    navigate(`/planets/${planet.id}/edit`)
   }
 
   const handleLearnMoreClick = () => {
@@ -62,13 +70,16 @@ const PlanetCard = ({ planet }: PlanetCardProps) => {
                 id="options-menu"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleOptionsClose}
+                onClose={() => handleOptionsClose()}
               >
-                <MenuItem onClick={handleOptionsClose} disableRipple>
+                <MenuItem
+                  onClick={() => handleOptionsClose('edit')}
+                  disableRipple
+                >
                   <EditIcon />
                   Edit
                 </MenuItem>
-                <MenuItem onClick={handleOptionsClose} disableRipple>
+                <MenuItem onClick={() => handleOptionsClose()} disableRipple>
                   <DeleteIcon />
                   Delete
                 </MenuItem>

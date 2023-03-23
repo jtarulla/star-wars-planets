@@ -16,6 +16,7 @@ export const fetchPlanets = async (page: number): Promise<PlanetsResponse> => {
 
     return {
       ...response.data,
+      page,
       results: planetsWithId,
     }
   } catch (error) {

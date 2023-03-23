@@ -9,15 +9,15 @@ export const fetchPlanetsAsync = createAsyncThunk<
   number,
   { state: RootState }
 >('planets/fetch', async (page: number, { getState, rejectWithValue }) => {
-  const { planetsByPage, newPlanets } = getState().planets
+  const { planetsByPage, count } = getState().planets
 
   if (planetsByPage[page]) {
     return {
       results: planetsByPage[page],
-      count: newPlanets.length,
+      count,
+      page,
       next: null,
       previous: null,
-      page,
     }
   }
 

@@ -110,7 +110,7 @@ const PlanetForm = ({ onSubmit, defaultValues }: PlanetFormProps) => {
         </Grid>
         <Grid item xs={12}>
           <Button variant="contained" color="primary" type="submit">
-            Add Planet
+            {!defaultValues ? 'Add Planet' : 'Edit Planet'}
           </Button>
         </Grid>
       </Grid>
