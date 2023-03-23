@@ -23,7 +23,8 @@ export const fetchPlanetsAsync = createAsyncThunk<
 
   try {
     const response = await fetchPlanets(page)
-    const results = [...response.results, ...newPlanets]
+    const results = response.results
+
     return {
       results,
       count: response.count,

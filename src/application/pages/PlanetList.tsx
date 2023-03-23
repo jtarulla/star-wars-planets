@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Grid, Skeleton, Button } from '@mui/material'
-import PublicIcon from '@mui/icons-material/Public'
+import AddIcon from '@mui/icons-material/Add'
 import Pagination from '@mui/material/Pagination'
 
 import { fetchPlanetsAsync } from '@/infrastructure/store/features/planetThunks'
@@ -23,7 +23,6 @@ const PlanetList = () => {
   const navigate = useNavigate()
 
   const loading = status === 'loading'
-  const failed = status === 'failed'
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -69,7 +68,7 @@ const PlanetList = () => {
           marginBottom: '25px',
         }}
       >
-        <PublicIcon /> Add new planet
+        <AddIcon /> Add new planet
       </Button>
       <Grid container spacing={4}>
         {loading
