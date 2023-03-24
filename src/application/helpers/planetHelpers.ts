@@ -1,15 +1,15 @@
 import { Planet } from '@/domain/models/Planet'
 
-interface PlanetToEdit {
+interface GetPlanetProps {
   planet: Planet | null
   isApiPlanet: boolean
 }
 
-export const getPlanetToEdit = (
+export const getPlanet = (
   id: string,
   newPlanets: Planet[],
   planetsByPage: Record<string, Planet[]>
-): PlanetToEdit => {
+): GetPlanetProps => {
   for (const planet of newPlanets) {
     if (planet.id === id) {
       return { planet, isApiPlanet: false }

@@ -6,12 +6,8 @@ import {
   fetchPlanetsAsync,
   fetchPlanetByIdAsync,
 } from '@/infrastructure/store/features/planetThunks'
+import { EditPlanetPayload, DeletePlanetPayload } from './planetSlice.types'
 import { loadState } from '@/infrastructure/store/localStorage'
-
-interface EditPlanetPayload {
-  planet: Planet
-  isApiPlanet: boolean
-}
 
 const initialState: PlanetsState = {
   planetsByPage: {},
@@ -56,6 +52,19 @@ export const planetSlice = createSlice({
         }
       }
       toast.success(`Planet ${planet.name} has been updated successfully`)
+    },
+    deletePlanet: (state, action: PayloadAction<DeletePlanetPayload>) => {
+      const { id, name, isApiPlanet } = action.payload
+
+      if (!isApiPlanet) {
+        state.newPlanets = state.newPlanets.filter((planet) => planet.id !== id)
+      } else {
+        const page = state.currentPage
+        state.planetsByPage[page] = state.planetsByPage[page].filter(
+          (planet) => planet.id !== id
+        )
+      }
+      toast.success(`Planet ${name} has been deleted successfully`)
     },
   },
   extraReducers: (builder) => {
@@ -107,6 +116,7 @@ export const planetSlice = createSlice({
   },
 })
 
-export const { addPlanet, setCurrentPlanet, editPlanet } = planetSlice.actions
+export const { addPlanet, setCurrentPlanet, editPlanet, deletePlanet } =
+  planetSlice.actions
 
 export default planetSlice.reducer

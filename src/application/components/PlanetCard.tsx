@@ -1,5 +1,6 @@
 import { useState, MouseEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Card,
   CardHeader,
@@ -15,7 +16,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 
+import { deletePlanet } from '@/infrastructure/store/features/planetSlice'
+import { AppDispatch } from '@/infrastructure/store'
+import { RootState } from '@/infrastructure/store'
 import PlanetInfo from '@/application/components/PlanetInfo'
+import { useGetPlanet } from '../hooks/useGetPlanet'
 import { Planet } from '@/domain/models/Planet'
 
 interface PlanetCardProps {
@@ -23,7 +28,18 @@ interface PlanetCardProps {
 }
 
 const PlanetCard = ({ planet }: PlanetCardProps) => {
+  const { newPlanets, planetsByPage } = useSelector(
+    (state: RootState) => state.planets
+  )
+  const { id, name } = planet
+  const { isApiPlanet } = useGetPlanet({
+    id,
+    newPlanets,
+    planetsByPage,
+  })
+
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -37,6 +53,10 @@ const PlanetCard = ({ planet }: PlanetCardProps) => {
 
     if (actionType === 'edit') {
       handleEditClick()
+    }
+
+    if (actionType === 'delete') {
+      dispatch(deletePlanet({ name, id, isApiPlanet }))
     }
   }
 
@@ -79,7 +99,10 @@ const PlanetCard = ({ planet }: PlanetCardProps) => {
                   <EditIcon />
                   Edit
                 </MenuItem>
-                <MenuItem onClick={() => handleOptionsClose()} disableRipple>
+                <MenuItem
+                  onClick={() => handleOptionsClose('delete')}
+                  disableRipple
+                >
                   <DeleteIcon />
                   Delete
                 </MenuItem>

@@ -1,21 +1,21 @@
 import { useMemo } from 'react'
-import { getPlanetToEdit } from '@/application/helpers/planetHelpers'
+import { getPlanet } from '@/application/helpers/planetHelpers'
 import { Planet } from '@/domain/models/Planet'
 
-interface UseGetPlanetToEditOptions {
+interface UseGetPlanetOptions {
   id: string | undefined
   newPlanets: Planet[]
   planetsByPage: Record<string, Planet[]>
 }
 
-export const useGetPlanetToEdit = ({
+export const useGetPlanet = ({
   id,
   newPlanets,
   planetsByPage,
-}: UseGetPlanetToEditOptions) => {
+}: UseGetPlanetOptions) => {
   const { planet, isApiPlanet } = useMemo(() => {
     return id
-      ? getPlanetToEdit(id, newPlanets, planetsByPage)
+      ? getPlanet(id, newPlanets, planetsByPage)
       : { planet: null, isApiPlanet: false }
   }, [id, newPlanets, planetsByPage])
 

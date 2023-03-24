@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import BackHomeButton from '@/application/components/BackHomeButton'
 import PlanetForm from '@/application/components/PlanetForm'
 import { editPlanet } from '@/infrastructure/store/features/planetSlice'
-import { useGetPlanetToEdit } from '@/application/hooks/useGetPlanetToEdit'
+import { useGetPlanet } from '@/application/hooks/useGetPlanet'
 import { RootState } from '@/infrastructure/store'
 import { Planet } from '@/domain/models/Planet'
 
@@ -16,7 +16,7 @@ const EditPlanet = () => {
   const { newPlanets, planetsByPage } = useSelector(
     (state: RootState) => state.planets
   )
-  const { planet, isApiPlanet } = useGetPlanetToEdit({
+  const { planet, isApiPlanet } = useGetPlanet({
     id,
     newPlanets,
     planetsByPage,
