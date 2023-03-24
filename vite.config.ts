@@ -1,17 +1,10 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import react from '@vitejs/plugin-react'
-import sass from 'vite-plugin-sass'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    sass({
-      include: '**/*.scss',
-      prettier: true,
-    }),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
@@ -19,7 +12,13 @@ export default defineConfig({
   },
   build: {
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        assetFileNames: 'assets/[name].[ext]',
+      },
+    },
   },
+  assetsInclude: ['**/*.webp'],
   server: {
     host: true,
     strictPort: true,
